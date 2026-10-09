@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 type IconName =
   | "arrow"
@@ -7,7 +7,25 @@ type IconName =
   | "chevron"
   | "play"
   | "spark"
-  | "target";
+  | "target"
+  | "github"
+  | "copy"
+  | "reset"
+  | "filter"
+  | "info";
+
+interface LevelPlan {
+  label: string;
+  short: string;
+  plan: string[];
+}
+
+interface StyleVariation {
+  name: string;
+  detail: string;
+  level: "Beginner" | "Intermediate" | "Advanced";
+  cue: string;
+}
 
 function Icon({
   name,
@@ -40,6 +58,27 @@ function Icon({
         <path d="m15 9 5-5" />
       </>
     ),
+    github: (
+      <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z" />
+    ),
+    copy: (
+      <>
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+      </>
+    ),
+    reset: (
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8m0-5v5h5" />
+    ),
+    filter: (
+      <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+    ),
+    info: (
+      <>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4m0-4h.01" />
+      </>
+    ),
   };
 
   return (
@@ -58,7 +97,7 @@ function Icon({
   );
 }
 
-const levels = [
+const levels: LevelPlan[] = [
   {
     label: "Beginner",
     short: "New",
@@ -138,7 +177,7 @@ const mistakes = [
   ],
 ];
 
-const pullUpStyles = [
+const pullUpStyles: StyleVariation[] = [
   {
     name: "Chin-up",
     detail: "Palms toward you",
@@ -246,13 +285,17 @@ const sessionStructure = [
 ];
 
 export default function App() {
-  const [level, setLevel] = useState(0);
-  const [coachStep, setCoachStep] = useState(1);
-  const [gender, setGender] = useState("");
-  const [height, setHeight] = useState("");
-  const [heightInches, setHeightInches] = useState("");
-  const [weight, setWeight] = useState("");
+  const [level, setLevel] = useState<number>(0);
+  const [coachStep, setCoachStep] = useState<number>(1);
+  const [gender, setGender] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
+  const [heightInches, setHeightInches] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
   const [completedSessions, setCompletedSessions] = useState<number[]>([]);
+  const [styleFilter, setStyleFilter] = useState<string>("All");
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [showGithubModal, setShowGithubModal] = useState<boolean>(false);
+  const [liveScanActive, setLiveScanActive] = useState<boolean>(true);
 
   const scrollToCoach = () => {
     document.getElementById("coach")?.scrollIntoView({
@@ -260,15 +303,44 @@ export default function App() {
     });
   };
 
+  const handleCopyGithubPrompt = () => {
+    const markdownContent = `# FORM//AI: Beginner Pull-Up Lab
+    
+AI-assisted pull-up progression app built with React, Tailwind CSS, and interactive form analysis.
+
+## Features
+- **4-Step Technique Guide**: Interactive positions breakdown with embedded media.
+- **AI Coach Generator**: Personalized session plan builder based on athlete anthropometrics.
+- **Weekly Workout Tracker**: Progressive overload schedule with real-time completion state.
+- **Gate 2 Build Plan**: Full curriculum deconstruction and team milestone matrix.
+
+## Author & Project
+Created for strict pull-up progression. Updated October 2026.`;
+
+    navigator.clipboard.writeText(markdownContent);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2500);
+  };
+
+  const filteredStyles = pullUpStyles.filter((s) => {
+    if (styleFilter === "All") return true;
+    return s.level === styleFilter;
+  });
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0c0d0d] text-[#f2f0e9]">
+    <main className="min-h-screen overflow-hidden bg-[#0c0d0d] font-sans text-[#f2f0e9] selection:bg-[#ff5c35] selection:text-black">
+      {/* Top Banner Notice */}
+      <div className="bg-[#ff5c35] px-4 py-2 text-center text-xs font-bold uppercase tracking-widest text-[#0c0d0d]">
+        🚀 Live Form Lab & Gate 2 Interactive Portal · Updated for GitHub
+      </div>
+
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-6 md:px-10">
         <a
           href="#"
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 transition hover:opacity-90"
           aria-label="Form AI home"
         >
-          <span className="grid size-9 place-items-center rounded-full bg-[#ff5c35] text-[#0c0d0d]">
+          <span className="grid size-9 place-items-center rounded-full bg-[#ff5c35] text-[#0c0d0d] shadow-lg shadow-[#ff5c35]/20">
             <Icon name="spark" className="size-5" />
           </span>
 
@@ -281,36 +353,43 @@ export default function App() {
           <a className="transition hover:text-white" href="#method">
             The method
           </a>
-
           <a className="transition hover:text-white" href="#technique">
             Technique
           </a>
-
           <a className="transition hover:text-white" href="#styles">
             Styles
           </a>
-
           <a className="transition hover:text-white" href="#program">
             Program
           </a>
-
           <a className="transition hover:text-white" href="#gate-2">
             Gate 2
           </a>
-
           <a className="transition hover:text-white" href="#coach">
             AI coach
           </a>
         </div>
 
-        <button
-          onClick={scrollToCoach}
-          className="rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold transition hover:border-[#ff5c35] hover:text-[#ff5c35]"
-        >
-          Start training
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowGithubModal(true)}
+            className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold transition hover:border-white hover:bg-white/10"
+            title="Export to GitHub format"
+          >
+            <Icon name="github" className="size-4" />
+            <span className="hidden sm:inline">GitHub Code</span>
+          </button>
+
+          <button
+            onClick={scrollToCoach}
+            className="rounded-full border border-[#ff5c35] bg-[#ff5c35] px-5 py-2 text-sm font-semibold text-[#0c0d0d] transition hover:bg-[#ff7858]"
+          >
+            Start training
+          </button>
+        </div>
       </nav>
 
+      {}
       <section className="mx-auto grid max-w-7xl gap-10 px-5 pb-20 pt-10 md:px-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:pb-28 lg:pt-16">
         <div className="relative z-10">
           <div className="mb-7 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-[#ff5c35]">
@@ -318,7 +397,7 @@ export default function App() {
             Beginner pull-up lab
           </div>
 
-          <h1 className="font-display max-w-3xl text-[clamp(4.3rem,9vw,8.4rem)] leading-[.78] tracking-[-0.035em]">
+          <h1 className="font-display max-w-3xl text-[clamp(3.8rem,8.5vw,7.8rem)] font-extrabold leading-[.82] tracking-[-0.035em]">
             PULL UP.
             <br />
             <span className="text-[#ff5c35]">LEVEL UP.</span>
@@ -336,7 +415,6 @@ export default function App() {
               className="group flex items-center gap-4 rounded-full bg-[#ff5c35] py-2 pl-6 pr-2 font-bold text-[#0c0d0d] transition hover:bg-[#ff7858]"
             >
               Build my plan
-
               <span className="grid size-10 place-items-center rounded-full bg-[#0c0d0d] text-white transition group-hover:translate-x-0.5">
                 <Icon name="arrow" />
               </span>
@@ -344,7 +422,7 @@ export default function App() {
 
             <a
               href="#technique"
-              className="flex items-center gap-3 text-sm font-semibold text-white/75 hover:text-white"
+              className="flex items-center gap-3 text-sm font-semibold text-white/75 transition hover:text-white"
             >
               <span className="grid size-10 place-items-center rounded-full border border-white/20">
                 <Icon name="play" className="size-4" />
@@ -357,16 +435,43 @@ export default function App() {
         <div className="relative mx-auto w-full max-w-xl">
           <div className="absolute -left-8 -top-8 size-40 rounded-full bg-[#ff5c35]/20 blur-3xl" />
 
-          <div className="relative h-[35rem] overflow-hidden rounded-[2rem] bg-[#191a1a] md:h-[42rem]">
+          <div className="relative h-[35rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[#191a1a] shadow-2xl md:h-[42rem]">
             <img
-              className="h-full w-full object-cover object-[50%_35%] grayscale"
+              className={`h-full w-full object-cover object-[50%_35%] transition-all duration-700 ${
+                liveScanActive ? "grayscale" : "grayscale-0"
+              }`}
               src="https://images.unsplash.com/photo-1734980341984-f1c34eb668e7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=85&w=1200"
               alt="Athlete performing a pull-up in a gym"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-            <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-2xl border border-white/15 bg-black/55 p-4 backdrop-blur-xl">
+            {/* Toggle live scan overlay */}
+            <button
+              onClick={() => setLiveScanActive(!liveScanActive)}
+              className="absolute right-5 top-5 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md transition hover:bg-black/80"
+            >
+              <span
+                className={`size-2 rounded-full ${
+                  liveScanActive ? "animate-pulse bg-[#c9ff4a]" : "bg-white/40"
+                }`}
+              />
+              {liveScanActive ? "Scan Mode Active" : "Original View"}
+            </button>
+
+            {/* Live Scan Overlay Graphic */}
+            {liveScanActive && (
+              <div className="pointer-events-none absolute inset-x-12 top-24 bottom-24 rounded-2xl border-2 border-dashed border-[#c9ff4a]/60 bg-[#c9ff4a]/5">
+                <div className="absolute left-1/2 top-4 -translate-x-1/2 rounded-md bg-[#c9ff4a] px-2 py-0.5 text-[0.65rem] font-bold text-black uppercase tracking-wider">
+                  Bar Detection Lock
+                </div>
+                <div className="absolute bottom-6 left-6 rounded-md bg-black/70 px-2 py-1 text-[0.65rem] font-mono text-[#c9ff4a]">
+                  [X: 120, Y: 340] · Shoulder Axis Aligned
+                </div>
+              </div>
+            )}
+
+            <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-2xl border border-white/15 bg-black/65 p-4 backdrop-blur-xl">
               <div className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-xl bg-[#c9ff4a] text-black">
                   <Icon name="camera" />
@@ -389,13 +494,14 @@ export default function App() {
             </div>
           </div>
 
-          <div className="absolute -right-3 top-12 rounded-2xl border border-white/10 bg-[#191a1a] px-5 py-4 shadow-2xl md:-right-10">
-            <p className="font-display text-3xl text-[#c9ff4a]">87%</p>
+          <div className="absolute -right-3 top-12 rounded-2xl border border-white/10 bg-[#191a1a] px-5 py-4 shadow-2xl backdrop-blur-xl md:-right-10">
+            <p className="font-display text-3xl font-bold text-[#c9ff4a]">87%</p>
             <p className="text-xs text-white/50">form score</p>
           </div>
         </div>
       </section>
 
+      {}
       <section
         id="method"
         className="border-y border-white/10 bg-[#131414]"
@@ -422,7 +528,7 @@ export default function App() {
               key={number}
               className="flex gap-5 py-8 md:px-8 md:first:pl-0 md:last:pr-0"
             >
-              <span className="font-display text-2xl text-[#ff5c35]">
+              <span className="font-display text-2xl font-bold text-[#ff5c35]">
                 {number}
               </span>
 
@@ -437,6 +543,7 @@ export default function App() {
         </div>
       </section>
 
+      {}
       <section
         id="technique"
         className="mx-auto max-w-7xl px-5 py-24 md:px-10 md:py-32"
@@ -447,7 +554,7 @@ export default function App() {
               The movement, decoded
             </p>
 
-            <h2 className="font-display text-5xl leading-none md:text-7xl">
+            <h2 className="font-display text-5xl font-extrabold leading-none md:text-7xl">
               FOUR STEPS.
               <br />
               ONE CLEAN REP.
@@ -467,7 +574,7 @@ export default function App() {
               className="group bg-[#131414] p-7 transition hover:bg-[#191a1a]"
             >
               <div className="flex items-center justify-between">
-                <span className="font-display text-4xl text-white/18">
+                <span className="font-display text-4xl font-bold text-white/18">
                   {step.number}
                 </span>
 
@@ -499,6 +606,7 @@ export default function App() {
           ))}
         </div>
 
+        {}
         <div className="mt-6 grid overflow-hidden rounded-3xl border border-white/10 bg-[#131414] lg:grid-cols-[1.5fr_.5fr]">
           <div className="relative aspect-video min-h-72 bg-black">
             <iframe
@@ -518,7 +626,7 @@ export default function App() {
                 Short form demo
               </span>
 
-              <h3 className="mt-5 font-display text-4xl leading-none">
+              <h3 className="mt-5 font-display text-4xl font-extrabold leading-none">
                 WATCH THE
                 <br />
                 FULL REP.
@@ -550,6 +658,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {}
       <section
         id="styles"
         className="border-y border-white/10 bg-[#131414] px-5 py-24 md:px-10 md:py-32"
@@ -561,21 +671,41 @@ export default function App() {
                 Build your movement library
               </p>
 
-              <h2 className="font-display text-5xl leading-none md:text-7xl">
+              <h2 className="font-display text-5xl font-extrabold leading-none md:text-7xl">
                 TEN WAYS TO
                 <br />
                 OWN THE BAR.
               </h2>
             </div>
 
-            <p className="max-w-md text-base leading-7 text-white/55">
-              Start with the beginner variations, then unlock new grips and
-              movement patterns as your control improves.
-            </p>
+            <div className="flex flex-col gap-3">
+              <p className="max-w-md text-base leading-7 text-white/55">
+                Start with the beginner variations, then unlock new grips and
+                movement patterns as your control improves.
+              </p>
+
+              {/* Filter Pills */}
+              <div className="flex items-center gap-2">
+                <Icon name="filter" className="size-4 text-white/40" />
+                {["All", "Beginner", "Intermediate", "Advanced"].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setStyleFilter(filter)}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                      styleFilter === filter
+                        ? "bg-[#c9ff4a] text-black"
+                        : "bg-white/10 text-white/60 hover:bg-white/20"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {pullUpStyles.map((style, index) => (
+            {filteredStyles.map((style, index) => (
               <article
                 key={style.name}
                 className="group flex min-h-64 flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d0d] p-5 transition hover:-translate-y-1 hover:border-[#ff5c35]/60"
@@ -594,7 +724,7 @@ export default function App() {
                       {style.level}
                     </span>
 
-                    <span className="font-display text-2xl text-white/15">
+                    <span className="font-display text-2xl font-bold text-white/15">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -623,7 +753,7 @@ export default function App() {
                     />
                   </div>
 
-                  <h3 className="font-display text-3xl leading-none">
+                  <h3 className="font-display text-3xl font-extrabold leading-none">
                     {style.name}
                   </h3>
 
@@ -646,6 +776,7 @@ export default function App() {
         </div>
       </section>
 
+      {}
       <section
         id="coach"
         className="bg-[#c9ff4a] px-5 py-24 text-[#0c0d0d] md:px-10 md:py-28"
@@ -657,7 +788,7 @@ export default function App() {
               AI training assistant
             </span>
 
-            <h2 className="mt-7 font-display text-6xl leading-[.88] md:text-8xl">
+            <h2 className="mt-7 font-display text-6xl font-extrabold leading-[.88] md:text-8xl">
               MEET YOUR
               <br />
               NEXT REP.
@@ -687,6 +818,7 @@ export default function App() {
             </div>
           </div>
 
+          {}
           <div className="rounded-[2rem] bg-[#0c0d0d] p-6 text-white shadow-[0_30px_80px_rgba(0,0,0,.25)] md:p-9">
             <div className="flex items-center justify-between border-b border-white/10 pb-6">
               <div>
@@ -761,7 +893,6 @@ export default function App() {
                       placeholder="5"
                       className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
                     />
-
                     <span className="text-sm text-white/40">ft</span>
                   </div>
 
@@ -778,7 +909,6 @@ export default function App() {
                       placeholder="8"
                       className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
                     />
-
                     <span className="text-sm text-white/40">in</span>
                   </div>
                 </div>
@@ -805,7 +935,6 @@ export default function App() {
                     placeholder="165"
                     className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
                   />
-
                   <span className="text-sm text-white/40">lb</span>
                 </div>
               </div>
@@ -823,7 +952,7 @@ export default function App() {
                         : "border-white/10 bg-white/5 hover:border-white/30"
                     }`}
                   >
-                    <span className="font-display text-2xl">
+                    <span className="font-display text-2xl font-bold">
                       {item.short}
                     </span>
 
@@ -841,6 +970,7 @@ export default function App() {
               </div>
             )}
 
+            {}
             {coachStep === 5 && (
               <div
                 className="mt-6 rounded-2xl border border-[#c9ff4a]/30 bg-[#c9ff4a]/8 p-5"
@@ -868,7 +998,7 @@ export default function App() {
                       key={exercise}
                       className="flex items-center gap-3 rounded-xl bg-white/5 p-3 text-sm"
                     >
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/10 text-xs text-white/60">
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/10 text-xs font-bold text-white/60">
                         {index + 1}
                       </span>
                       {exercise}
@@ -877,8 +1007,8 @@ export default function App() {
                 </div>
 
                 <p className="mt-4 text-xs leading-5 text-white/40">
-                  Built for a {height} ft {heightInches || "0"} in,{" "}
-                  {weight} lb {levels[level].label.toLowerCase()} athlete.
+                  Built for a {height || "5"} ft {heightInches || "8"} in,{" "}
+                  {weight || "165"} lb {levels[level].label.toLowerCase()} athlete.
                   Stop if you feel sharp pain and record one set from the
                   side to review your form.
                 </p>
@@ -895,7 +1025,7 @@ export default function App() {
                 </button>
               )}
 
-              {coachStep < 5 && (
+              {coachStep < 5 ? (
                 <button
                   onClick={() => setCoachStep((step) => step + 1)}
                   disabled={
@@ -913,12 +1043,21 @@ export default function App() {
 
                   {coachStep < 4 ? <Icon name="arrow" /> : null}
                 </button>
+              ) : (
+                <button
+                  onClick={() => setCoachStep(1)}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 py-4 font-bold text-white transition hover:bg-white/20"
+                >
+                  <Icon name="reset" className="size-4" />
+                  Restart Assessment
+                </button>
               )}
             </div>
           </div>
         </div>
       </section>
 
+      {}
       <section
         id="program"
         className="mx-auto max-w-7xl px-5 py-24 md:px-10 md:py-32"
@@ -929,7 +1068,7 @@ export default function App() {
               Your weekly system
             </p>
 
-            <h2 className="font-display text-5xl leading-none md:text-7xl">
+            <h2 className="font-display text-5xl font-extrabold leading-none md:text-7xl">
               SHOW UP.
               <br />
               TRACK IT. GROW.
@@ -981,7 +1120,7 @@ export default function App() {
                     }`}
                   >
                     <span
-                      className={`grid size-12 place-items-center rounded-xl font-display text-lg ${
+                      className={`grid size-12 place-items-center rounded-xl font-display text-lg font-bold ${
                         completed
                           ? "bg-[#c9ff4a] text-black"
                           : "bg-white/8 text-white/65"
@@ -1043,12 +1182,13 @@ export default function App() {
             </div>
           </div>
 
+          {}
           <div className="rounded-[2rem] bg-[#ff5c35] p-6 text-black md:p-8">
             <p className="text-xs font-bold uppercase tracking-[.18em] text-black/55">
               Session structure
             </p>
 
-            <h3 className="mt-2 font-display text-4xl">
+            <h3 className="mt-2 font-display text-4xl font-extrabold">
               35 MINUTES. NO GUESSING.
             </h3>
 
@@ -1059,7 +1199,7 @@ export default function App() {
                   className="grid grid-cols-[3rem_1fr] gap-4 py-5"
                 >
                   <div>
-                    <span className="font-display text-3xl">
+                    <span className="font-display text-3xl font-bold">
                       {phase.time}
                     </span>
 
@@ -1111,18 +1251,20 @@ export default function App() {
               className="rounded-2xl border border-white/10 bg-[#131414] p-5"
             >
               <p className="text-xs text-white/35">{label}</p>
-              <p className="mt-2 font-display text-2xl">{value}</p>
+              <p className="mt-2 font-display text-2xl font-bold">{value}</p>
             </div>
           ))}
         </div>
       </section>
+
+      {}
       <section className="mx-auto grid max-w-7xl gap-12 px-5 py-24 md:px-10 lg:grid-cols-2 lg:py-32">
         <div>
           <p className="mb-4 text-xs font-bold uppercase tracking-[.22em] text-[#ff5c35]">
             Fast form fixes
           </p>
 
-          <h2 className="font-display text-5xl leading-none md:text-7xl">
+          <h2 className="font-display text-5xl font-extrabold leading-none md:text-7xl">
             DON'T JUST GET UP.
             <br />
             GET BETTER.
@@ -1135,7 +1277,7 @@ export default function App() {
               key={title}
               className="grid grid-cols-[3rem_1fr] gap-4 py-6"
             >
-              <span className="font-display text-2xl text-white/25">
+              <span className="font-display text-2xl font-bold text-white/25">
                 0{index + 1}
               </span>
 
@@ -1151,6 +1293,7 @@ export default function App() {
         </div>
       </section>
 
+      {}
       <section
         id="gate-2"
         className="bg-[#f2f0e9] px-5 py-24 text-[#0c0d0d] md:px-10 md:py-32"
@@ -1162,7 +1305,7 @@ export default function App() {
                 Gate 2 · Teaching outline + build plan
               </p>
 
-              <h2 className="font-display text-6xl leading-[.86] md:text-8xl">
+              <h2 className="font-display text-6xl font-extrabold leading-[.86] md:text-8xl">
                 ONE STRICT
                 <br />
                 PULL-UP.
@@ -1190,7 +1333,7 @@ export default function App() {
                     01 · Skill deconstructed
                   </p>
 
-                  <h3 className="mt-2 font-display text-4xl">
+                  <h3 className="mt-2 font-display text-4xl font-extrabold">
                     LEARN → TRY → CHECK
                   </h3>
                 </div>
@@ -1237,7 +1380,7 @@ export default function App() {
                     key={title}
                     className="grid gap-2 py-4 sm:grid-cols-[2rem_1fr_1fr] sm:gap-4"
                   >
-                    <span className="font-display text-xl text-black/25">
+                    <span className="font-display text-xl font-bold text-black/25">
                       {index + 1}
                     </span>
 
@@ -1268,7 +1411,7 @@ export default function App() {
                 02 · Tool structure
               </p>
 
-              <h3 className="mt-2 font-display text-4xl">
+              <h3 className="mt-2 font-display text-4xl font-extrabold">
                 THE LEARNER'S PATH
               </h3>
 
@@ -1310,7 +1453,7 @@ export default function App() {
                     className="rounded-2xl border border-white/10 bg-white/5 p-4"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="font-display text-2xl text-[#ff5c35]">
+                      <span className="font-display text-2xl font-bold text-[#ff5c35]">
                         {number}
                       </span>
 
@@ -1338,6 +1481,7 @@ export default function App() {
             </article>
           </div>
 
+          {}
           <article className="mt-5 rounded-3xl border border-black/12 bg-white p-6 md:p-8">
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
               <div>
@@ -1345,7 +1489,7 @@ export default function App() {
                   03 · Build plan
                 </p>
 
-                <h3 className="mt-2 font-display text-4xl">
+                <h3 className="mt-2 font-display text-4xl font-extrabold">
                   EVERY MILESTONE HAS AN OWNER
                 </h3>
               </div>
@@ -1408,7 +1552,7 @@ export default function App() {
                     index % 2 === 0 ? "bg-[#f7f6f1]" : "bg-white"
                   }`}
                 >
-                  <span className="font-display text-xl">{date}</span>
+                  <span className="font-display text-xl font-bold">{date}</span>
 
                   <span className="text-sm font-bold">{milestone}</span>
 
@@ -1449,13 +1593,14 @@ export default function App() {
             </div>
           </article>
 
+          {}
           <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
             <article className="rounded-3xl bg-[#ff5c35] p-6 md:p-8">
               <p className="text-xs font-bold uppercase tracking-[.16em] text-black/55">
                 04 · Biggest risk + Plan B
               </p>
 
-              <h3 className="mt-3 font-display text-4xl">
+              <h3 className="mt-3 font-display text-4xl font-extrabold">
                 FIND THE BAR BEFORE RECORDING.
               </h3>
 
@@ -1520,7 +1665,7 @@ export default function App() {
                 Bounce check
               </p>
 
-              <h3 className="mt-3 font-display text-4xl">
+              <h3 className="mt-3 font-display text-4xl font-extrabold">
                 READY FOR REVIEW
               </h3>
 
@@ -1548,9 +1693,50 @@ export default function App() {
         </div>
       </section>
 
+      {}
+      {showGithubModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-5 backdrop-blur-md">
+          <div className="w-full max-w-lg rounded-3xl border border-white/20 bg-[#131414] p-6 text-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center gap-3">
+                <Icon name="github" className="size-6 text-[#ff5c35]" />
+                <h3 className="text-lg font-bold">GitHub Repository Export</h3>
+              </div>
+              <button
+                onClick={() => setShowGithubModal(false)}
+                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60 hover:bg-white/20"
+              >
+                ✕ Close
+              </button>
+            </div>
+
+            <p className="mt-4 text-sm leading-6 text-white/60">
+              Copy the formatted project overview and README code to push to your team's GitHub repository:
+            </p>
+
+            <div className="mt-4 rounded-xl border border-white/10 bg-black/60 p-4 font-mono text-xs text-white/80">
+              <p className="text-[#c9ff4a]"># FORM//AI: Beginner Pull-Up Lab</p>
+              <p className="mt-1 text-white/50">// Interactive single-file React component</p>
+              <p className="mt-1 text-white/50">// Built for GitHub integration & Gate 2 milestone submission</p>
+            </div>
+
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                onClick={handleCopyGithubPrompt}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#ff5c35] py-3 text-sm font-bold text-black transition hover:bg-[#ff7858]"
+              >
+                <Icon name="copy" className="size-4" />
+                {copiedCode ? "Copied to Clipboard!" : "Copy README & Code Spec"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {}
       <footer className="border-t border-white/10 px-5 py-8 md:px-10">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-white/35 md:flex-row">
-          <p className="font-display text-lg text-white">
+          <p className="font-display text-lg font-bold text-white">
             FORM<span className="text-[#ff5c35]">//</span>AI
           </p>
 
