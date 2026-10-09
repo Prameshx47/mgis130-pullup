@@ -1,0 +1,566 @@
+      <section
+        id="styles"
+        className="border-y border-white/10 bg-[#131414] px-5 py-24 md:px-10 md:py-32"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="mb-4 text-xs font-bold uppercase tracking-[.22em] text-[#c9ff4a]">
+                Build your movement library
+              </p>
+
+              <h2 className="font-display text-5xl leading-none md:text-7xl">
+                TEN WAYS TO
+                <br />
+                OWN THE BAR.
+              </h2>
+            </div>
+
+            <p className="max-w-md text-base leading-7 text-white/55">
+              Start with the beginner variations, then unlock new grips and
+              movement patterns as your control improves.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {pullUpStyles.map((style, index) => (
+              <article
+                key={style.name}
+                className="group flex min-h-64 flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d0d] p-5 transition hover:-translate-y-1 hover:border-[#ff5c35]/60"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`rounded-full px-3 py-1 text-[.65rem] font-bold uppercase tracking-wider ${
+                        style.level === "Beginner"
+                          ? "bg-[#c9ff4a] text-black"
+                          : style.level === "Intermediate"
+                            ? "bg-white/10 text-white/65"
+                            : "bg-[#ff5c35] text-black"
+                      }`}
+                    >
+                      {style.level}
+                    </span>
+
+                    <span className="font-display text-2xl text-white/15">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  <div className="relative my-7 h-10">
+                    <span className="absolute left-0 right-0 top-0 h-1 rounded-full bg-white/25 transition-colors group-hover:bg-[#ff5c35]" />
+
+                    <span
+                      className={`absolute top-0 h-5 w-2 rounded-b-full bg-white/65 ${
+                        index % 3 === 0
+                          ? "left-[28%]"
+                          : index % 3 === 1
+                            ? "left-[38%]"
+                            : "left-[20%]"
+                      }`}
+                    />
+
+                    <span
+                      className={`absolute top-0 h-5 w-2 rounded-b-full bg-white/65 ${
+                        index % 3 === 0
+                          ? "right-[28%]"
+                          : index % 3 === 1
+                            ? "right-[38%]"
+                            : "right-[20%]"
+                      }`}
+                    />
+                  </div>
+
+                  <h3 className="font-display text-3xl leading-none">
+                    {style.name}
+                  </h3>
+
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[.12em] text-[#ff5c35]">
+                    {style.detail}
+                  </p>
+                </div>
+
+                <p className="mt-5 text-xs leading-5 text-white/45">
+                  {style.cue}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-6 text-xs leading-5 text-white/35">
+            Advanced variations require a solid base of strict pull-ups.
+            Progress gradually and use appropriate assistance.
+          </p>
+        </div>
+      </section>
+
+      <section
+        id="coach"
+        className="bg-[#c9ff4a] px-5 py-24 text-[#0c0d0d] md:px-10 md:py-28"
+      >
+        <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-black/20 px-4 py-2 text-xs font-bold uppercase tracking-[.18em]">
+              <Icon name="spark" className="size-4" />
+              AI training assistant
+            </span>
+
+            <h2 className="mt-7 font-display text-6xl leading-[.88] md:text-8xl">
+              MEET YOUR
+              <br />
+              NEXT REP.
+            </h2>
+
+            <p className="mt-7 max-w-md text-lg leading-8 text-black/65">
+              Tell the coach what you can do today. It will build a focused
+              starter session you can repeat and refine.
+            </p>
+
+            <div className="mt-10 space-y-4">
+              {[
+                "Personalized to your ability",
+                "Technique-first progressions",
+                "Easy weekly adjustments",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 text-sm font-semibold"
+                >
+                  <span className="grid size-6 place-items-center rounded-full bg-black text-[#c9ff4a]">
+                    <Icon name="check" className="size-3.5" />
+                  </span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] bg-[#0c0d0d] p-6 text-white shadow-[0_30px_80px_rgba(0,0,0,.25)] md:p-9">
+            <div className="flex items-center justify-between border-b border-white/10 pb-6">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[.18em] text-[#ff5c35]">
+                  Step {coachStep} of 5
+                </p>
+
+                <h3 className="mt-2 text-xl font-bold">
+                  {coachStep === 1 && "How do you identify?"}
+                  {coachStep === 2 && "What is your height?"}
+                  {coachStep === 3 && "What is your weight?"}
+                  {coachStep === 4 && "What is your training level?"}
+                  {coachStep === 5 && "Your starter session is ready"}
+                </h3>
+              </div>
+
+              <span className="grid size-11 place-items-center rounded-full bg-white/8 text-[#c9ff4a]">
+                <Icon name="target" />
+              </span>
+            </div>
+
+            <div
+              className="mt-5 flex gap-2"
+              aria-label={`Step ${coachStep} of 5`}
+            >
+              {[1, 2, 3, 4, 5].map((step) => (
+                <span
+                  key={step}
+                  className={`h-1.5 flex-1 rounded-full transition-colors ${
+                    step <= coachStep ? "bg-[#c9ff4a]" : "bg-white/10"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {coachStep === 1 && (
+              <div className="mt-7 grid grid-cols-3 gap-3">
+                {["Woman", "Man", "Non-binary"].map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setGender(option)}
+                    className={`rounded-2xl border p-4 text-sm font-semibold transition ${
+                      gender === option
+                        ? "border-[#ff5c35] bg-[#ff5c35] text-black"
+                        : "border-white/10 bg-white/5 hover:border-white/30"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {coachStep === 2 && (
+              <div className="mt-7">
+                <label
+                  className="mb-3 block text-sm text-white/60"
+                  htmlFor="height"
+                >
+                  Height in feet and inches
+                </label>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center rounded-2xl border border-white/10 bg-white/5 px-5 focus-within:border-[#ff5c35]">
+                    <input
+                      id="height"
+                      min="3"
+                      max="8"
+                      type="number"
+                      value={height}
+                      onChange={(event) => setHeight(event.target.value)}
+                      placeholder="5"
+                      className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
+                    />
+
+                    <span className="text-sm text-white/40">ft</span>
+                  </div>
+
+                  <div className="flex items-center rounded-2xl border border-white/10 bg-white/5 px-5 focus-within:border-[#ff5c35]">
+                    <input
+                      id="height-inches"
+                      min="0"
+                      max="11"
+                      type="number"
+                      value={heightInches}
+                      onChange={(event) =>
+                        setHeightInches(event.target.value)
+                      }
+                      placeholder="8"
+                      className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
+                    />
+
+                    <span className="text-sm text-white/40">in</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {coachStep === 3 && (
+              <div className="mt-7">
+                <label
+                  className="mb-3 block text-sm text-white/60"
+                  htmlFor="weight"
+                >
+                  Weight in pounds
+                </label>
+
+                <div className="flex items-center rounded-2xl border border-white/10 bg-white/5 px-5 focus-within:border-[#ff5c35]">
+                  <input
+                    id="weight"
+                    min="65"
+                    max="660"
+                    type="number"
+                    value={weight}
+                    onChange={(event) => setWeight(event.target.value)}
+                    placeholder="165"
+                    className="min-w-0 flex-1 bg-transparent py-5 text-2xl font-bold outline-none placeholder:text-white/20"
+                  />
+
+                  <span className="text-sm text-white/40">lb</span>
+                </div>
+              </div>
+            )}
+
+            {coachStep === 4 && (
+              <div className="mt-7 grid grid-cols-3 gap-3">
+                {levels.map((item, index) => (
+                  <button
+                    key={item.short}
+                    onClick={() => setLevel(index)}
+                    className={`rounded-2xl border p-4 text-left transition ${
+                      level === index
+                        ? "border-[#ff5c35] bg-[#ff5c35] text-black"
+                        : "border-white/10 bg-white/5 hover:border-white/30"
+                    }`}
+                  >
+                    <span className="font-display text-2xl">
+                      {item.short}
+                    </span>
+
+                    <span
+                      className={`mt-1 block text-xs ${
+                        level === index
+                          ? "text-black/60"
+                          : "text-white/45"
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {coachStep === 5 && (
+              <div
+                className="mt-6 rounded-2xl border border-[#c9ff4a]/30 bg-[#c9ff4a]/8 p-5"
+                aria-live="polite"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[.16em] text-[#c9ff4a]">
+                      Your AI session
+                    </p>
+
+                    <p className="mt-1 text-sm text-white/50">
+                      3 rounds · Rest 90 sec · 2× weekly
+                    </p>
+                  </div>
+
+                  <span className="rounded-full bg-[#c9ff4a] px-3 py-1 text-xs font-bold text-black">
+                    Ready
+                  </span>
+                </div>
+
+                <div className="mt-5 space-y-3">
+                  {levels[level].plan.map((exercise, index) => (
+                    <div
+                      key={exercise}
+                      className="flex items-center gap-3 rounded-xl bg-white/5 p-3 text-sm"
+                    >
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-white/10 text-xs text-white/60">
+                        {index + 1}
+                      </span>
+                      {exercise}
+                    </div>
+                  ))}
+                </div>
+
+                <p className="mt-4 text-xs leading-5 text-white/40">
+                  Built for a {height} ft {heightInches || "0"} in,{" "}
+                  {weight} lb {levels[level].label.toLowerCase()} athlete.
+                  Stop if you feel sharp pain and record one set from the
+                  side to review your form.
+                </p>
+              </div>
+            )}
+
+            <div className="mt-6 flex gap-3">
+              {coachStep > 1 && (
+                <button
+                  onClick={() => setCoachStep((step) => step - 1)}
+                  className="rounded-2xl border border-white/15 px-5 py-4 font-bold text-white transition hover:border-white/35"
+                >
+                  Back
+                </button>
+              )}
+
+              {coachStep < 5 && (
+                <button
+                  onClick={() => setCoachStep((step) => step + 1)}
+                  disabled={
+                    (coachStep === 1 && !gender) ||
+                    (coachStep === 2 && !height) ||
+                    (coachStep === 3 && !weight)
+                  }
+                  className="flex flex-1 items-center justify-center gap-3 rounded-2xl bg-white py-4 font-bold text-black transition hover:bg-[#ff5c35] disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  {coachStep === 4 ? <Icon name="spark" /> : null}
+
+                  {coachStep === 4
+                    ? "Generate my starter session"
+                    : "Continue"}
+
+                  {coachStep < 4 ? <Icon name="arrow" /> : null}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="program"
+        className="mx-auto max-w-7xl px-5 py-24 md:px-10 md:py-32"
+      >
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[.22em] text-[#ff5c35]">
+              Your weekly system
+            </p>
+
+            <h2 className="font-display text-5xl leading-none md:text-7xl">
+              SHOW UP.
+              <br />
+              TRACK IT. GROW.
+            </h2>
+          </div>
+
+          <p className="max-w-md text-base leading-7 text-white/55">
+            Three focused sessions are enough to build skill without exhausting
+            your grip. Check off each workout as you go.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-[#131414] p-6 md:p-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[.18em] text-[#c9ff4a]">
+                  Weekly schedule
+                </p>
+
+                <h3 className="mt-2 text-xl font-bold">
+                  Three days on the bar
+                </h3>
+              </div>
+
+              <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/50">
+                Week 01
+              </span>
+            </div>
+
+            <div className="mt-7 space-y-3">
+              {trainingDays.map((session, index) => {
+                const completed = completedSessions.includes(index);
+
+                return (
+                  <button
+                    key={session.day}
+                    onClick={() =>
+                      setCompletedSessions((current) =>
+                        completed
+                          ? current.filter((item) => item !== index)
+                          : [...current, index],
+                      )
+                    }
+                    className={`grid w-full grid-cols-[3rem_1fr_auto] items-center gap-4 rounded-2xl border p-4 text-left transition ${
+                      completed
+                        ? "border-[#c9ff4a]/40 bg-[#c9ff4a]/8"
+                        : "border-white/8 bg-white/[.03] hover:border-white/20"
+                    }`}
+                  >
+                    <span
+                      className={`grid size-12 place-items-center rounded-xl font-display text-lg ${
+                        completed
+                          ? "bg-[#c9ff4a] text-black"
+                          : "bg-white/8 text-white/65"
+                      }`}
+                    >
+                      {completed ? <Icon name="check" /> : session.day}
+                    </span>
+
+                    <span>
+                      <span
+                        className={`block font-bold ${
+                          completed ? "text-white/45 line-through" : ""
+                        }`}
+                      >
+                        {session.title}
+                      </span>
+
+                      <span className="mt-1 block text-xs leading-5 text-white/40">
+                        {session.detail}
+                      </span>
+                    </span>
+
+                    <span className="hidden rounded-full bg-white/5 px-3 py-1.5 text-xs text-white/45 sm:block">
+                      {session.duration}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-7 rounded-2xl bg-white/5 p-5">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-semibold">Weekly progress</span>
+
+                <span className="text-[#c9ff4a]">
+                  {completedSessions.length} of 3 complete
+                </span>
+              </div>
+
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                <div
+                  className={`h-full rounded-full bg-[#c9ff4a] transition-all duration-500 ${
+                    completedSessions.length === 0
+                      ? "w-0"
+                      : completedSessions.length === 1
+                        ? "w-1/3"
+                        : completedSessions.length === 2
+                          ? "w-2/3"
+                          : "w-full"
+                  }`}
+                />
+              </div>
+
+              <p className="mt-3 text-xs text-white/35">
+                {completedSessions.length === 3
+                  ? "Week complete. Take a recovery day, then update your AI plan."
+                  : "Tap a workout after you finish it to keep your streak moving."}
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] bg-[#ff5c35] p-6 text-black md:p-8">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-black/55">
+              Session structure
+            </p>
+
+            <h3 className="mt-2 font-display text-4xl">
+              35 MINUTES. NO GUESSING.
+            </h3>
+
+            <div className="mt-7 divide-y divide-black/15 border-y border-black/15">
+              {sessionStructure.map((phase, index) => (
+                <div
+                  key={phase.title}
+                  className="grid grid-cols-[3rem_1fr] gap-4 py-5"
+                >
+                  <div>
+                    <span className="font-display text-3xl">
+                      {phase.time}
+                    </span>
+
+                    <span className="block text-[.6rem] font-bold uppercase tracking-wider text-black/45">
+                      min
+                    </span>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="grid size-5 place-items-center rounded-full bg-black text-[.65rem] font-bold text-[#ff5c35]">
+                        {index + 1}
+                      </span>
+
+                      <h4 className="font-bold">{phase.title}</h4>
+                    </div>
+
+                    <p className="mt-2 text-sm leading-5 text-black/60">
+                      {phase.detail}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex items-start gap-3 rounded-2xl bg-black/10 p-4">
+              <Icon
+                name="target"
+                className="mt-0.5 size-5 shrink-0"
+              />
+
+              <p className="text-xs leading-5 text-black/65">
+                Keep two reps in reserve. The goal is repeatable technique,
+                not failure. Add volume only when every rep looks the same.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-4">
+          {[
+            ["Current focus", "Strict form"],
+            ["Weekly target", "3 sessions"],
+            ["Recovery", "48 hours"],
+            ["Next review", "After session 3"],
+          ].map(([label, value]) => (
+            <div
+              key={label}
+              className="rounded-2xl border border-white/10 bg-[#131414] p-5"
+            >
+              <p className="text-xs text-white/35">{label}</p>
+              <p className="mt-2 font-display text-2xl">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
